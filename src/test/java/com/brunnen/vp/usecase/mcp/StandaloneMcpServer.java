@@ -1,17 +1,16 @@
 package com.brunnen.vp.usecase.mcp;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.concurrent.CountDownLatch;
 
-/**
- * Standalone MCP server for testing purposes. This runs independently of Visual Paradigm for
- * testing.
- */
-@SpringBootApplication
-public class StandaloneMcpServer {
+/** Transport smoke test; actual modeling operations require Visual Paradigm. */
+public final class StandaloneMcpServer {
+  private StandaloneMcpServer() {}
 
-  public static void main(String[] args) {
-    System.setProperty("spring.profiles.active", "mcp");
-    SpringApplication.run(StandaloneMcpServer.class, args);
+  /** Starts the transport without a VP application for Java runtime smoke tests. */
+  public static void main(String[] args) throws Exception {
+    McpServer server = new McpServer();
+    server.start();
+    Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
+    new CountDownLatch(1).await();
   }
 }

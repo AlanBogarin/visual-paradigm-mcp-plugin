@@ -11,6 +11,20 @@
     </formats>
     <fileSets>
         <fileSet>
+            <directory>${project.basedir}</directory>
+            <includes>
+                <include>LICENSE</include>
+                <include>THIRD_PARTY_NOTICES.md</include>
+                <include>CHANGELOG.md</include>
+                <include>README.md</include>
+                <include>install-windows.ps1</include>
+                <include>docs/**</include>
+                <include>examples/**</include>
+                <include>licenses/**</include>
+            </includes>
+            <outputDirectory>.</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>${project.basedir}/src/assembly/</directory>
             <includes>
                 <include>plugin.properties</include>
@@ -23,8 +37,9 @@
         <dependencySet>
             <outputDirectory>lib</outputDirectory>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
-            <useTransitiveDependencies>true</useTransitiveDependencies>
+            <useTransitiveDependencies>false</useTransitiveDependencies>
             <useProjectArtifact>true</useProjectArtifact>
+            <includes><include>${project.groupId}:${project.artifactId}</include></includes>
             <scope>runtime</scope>
         </dependencySet>
     </dependencySets>

@@ -1,6 +1,6 @@
 - Before starting a Task, read the PROJECT_STATUS.md file
 - After finishing a Task, write a PROJECT_STATUS.md file
-- Use `./run` for all build operations (build, test, package, install, all)
+- Use `./run` (Bash) or `.\run.ps1` (Windows) for build operations
 - Run pre-commit on new or changed files
 - Fix especially pre-existing issues
 - Do not suppress warnings
@@ -14,11 +14,8 @@
 - Visual Paradigm runs on Java 11, the plugin must compatible to Java 11
 - [Visual Paradigm Plugin API JavaDoc](https://www.visual-paradigm.com/support/documents/pluginjavadoc/overview-summary.html)
 - [Create Use Case Diagram using Open API](knowhow.visual-paradigm.com/openapi/use-case-diagram/)
-- [Spring AI MCP Server Boot Starter](https://docs.spring.io/spring-ai/reference/1.1/api/mcp/mcp-streamable-http-server-boot-starter-docs.html)
-- [Spring AI MCP Server Annotations](https://docs.spring.io/spring-ai/reference/1.1/api/mcp/mcp-annotations-server.html)
-- [Spring AI MCP Server Annotations Special Params](https://docs.spring.io/spring-ai/reference/1.1/api/mcp/mcp-annotations-special-params.html)
-- [Spring AI MCP Annotations Examples](https://docs.spring.io/spring-ai/reference/1.1/api/mcp/mcp-annotations-examples.html)
 - [MCP Specification](https://modelcontextprotocol.io/specification/2025-06-18)
 - [Build an MCP server](https://modelcontextprotocol.io/docs/develop/build-server#java)
 - [MCP Inspector](https://modelcontextprotocol.io/legacy/tools/inspector)
 - [MCP Transports](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports)
+- Runtime dependencies are NanoHTTPD and Gson, bundled and relocated for Java 11. Keep the runtime compatible with Visual Paradigm.'s bundled Java 11.

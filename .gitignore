@@ -1,6 +1,15 @@
-PROJECT_STATUS.md
 target/
+build-*.log
 /.m2
+/.tools/
+/.codex/
+.env
+.env.*
+!.env.example
+*.vpp
+*.vpp.bak*
+*.backup-*
+*.log
 
 ### STS ###
 .apt_generated

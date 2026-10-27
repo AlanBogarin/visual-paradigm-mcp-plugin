@@ -1,0 +1,6 @@
+# Merge this table into your Codex config.toml; do not replace the entire file.
+# Visual Paradigm must be running locally with the plugin loaded.
+[mcp_servers.visual_paradigm]
+url = "http://127.0.0.1:8080/mcp"
+startup_timeout_sec = 20
+tool_timeout_sec = 60

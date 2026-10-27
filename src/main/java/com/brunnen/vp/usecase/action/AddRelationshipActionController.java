@@ -145,8 +145,9 @@ public class AddRelationshipActionController implements VPActionController {
       DiagramManager diagramManager) {
     // Create extend model element
     IExtend extend = IModelElementFactory.instance().createExtend();
-    extend.setFrom(source);
-    extend.setTo(target);
+    // VP stores Extend as base -> extending use case, opposite to the UML arrow.
+    extend.setFrom(target);
+    extend.setTo(source);
 
     // Add to diagram
     diagramManager.createDiagramElement(diagram, extend);

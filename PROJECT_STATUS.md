@@ -1,75 +1,70 @@
-# PROJECT_STATUS.md
+# Project status
 
-## Task Completed: MCP Server Integration into Plugin
+## Java 11 / Windows / Codex fork
 
-### Overview
-Successfully moved the MCP (Model Context Protocol) server from a separate module into the Visual Paradigm plugin structure, integrating it as a core component of the use case plugin.
+The embedded server runs inside Visual Paradigm and exposes five actual use case
+modeling tools over Streamable HTTP at http://127.0.0.1:8080/mcp.
 
-### Changes Made
+### Implemented and exercised
 
-#### Structure Changes
-- **Removed**: `/spring-ai-mcp-server/` directory (completely removed old separate structure)
-- **Added**: `/src/main/java/com/brunnen/vp/usecase/mcp/` package for MCP integration
-- **Added**: `/src/test/java/com/brunnen/vp/usecase/mcp/` for MCP tests
+- Java 11-compatible NanoHTTPD/Gson runtime with relocated dependencies.
+- JSON-RPC initialization, discovery, errors, UTF-8 and Host/Origin validation.
+- OpenAPI operations on the Swing event dispatch thread.
+- Correct Visual Paradigm Extend endpoint convention and UML report direction.
+- Reuse of unambiguous existing actors/use cases across diagrams.
+- Visible actor/relationship captions and spaced use case positions.
+- Windows build and installation helpers with backups and optional Codex setup.
 
-#### New MCP Classes
-1. **McpServer.java** - Main MCP server controller
-   - Manages Spring Boot application lifecycle
-   - Start/stop functionality
-   - Health checking capabilities
+### Verified environment
 
-2. **UseCaseMcpToolsService.java** - Use case specific MCP tools
-   - `createUseCaseDiagram()` - Creates new use case diagrams
-   - `addActor()` - Adds actors to diagrams
-   - `addUseCase()` - Adds use cases to diagrams
-   - `addRelationship()` - Creates relationships between actors and use cases
-   - `generateReport()` - Generates use case reports
+- Windows 11; Visual Paradigm Community Edition 18.1 with bundled Java 11.
+- Compiled using JDK 21 and release target 11.
+- 21 automated tests passed; all five tools were exercised against the running application.
+- Formatting and Checkstyle checks passed through pre-commit.
+- The full Maven verify lifecycle has additional gates and is not claimed as validated.
+- Linux and macOS installations have not been validated in this fork.
 
-3. **Test Classes**
-   - `McpServerTest.java` - Tests Spring context loading
-   - `UseCaseMcpToolsServiceTest.java` - Tests all MCP tool methods
+## Preparing the fork for manual publication
 
-#### Plugin Integration
-- **VPUseCasePlugin.java** updated to start/stop MCP server during plugin lifecycle
-- MCP server starts when plugin is loaded
-- MCP server stops when plugin is unloaded
-- Error handling for MCP server startup/shutdown
+- Installation, configuration, custom ports, troubleshooting and rollback: docs/INSTALLATION.md.
+- Manual GitHub fork/upload and optional release steps: docs/PUBLISHING.md.
+- Fork changes and validation scope: CHANGELOG.md.
+- Original Apache-2.0 license and provider attribution retained.
+- Third-party distribution notices and NanoHTTPD license included.
+- Shareable configuration and connection check are under examples/.
+- prepare-fork.ps1 exports only selected source, documentation and license files.
+- Local configuration, caches, logs, project files and proprietary OpenAPI binaries are excluded.
+- Public status documentation contains no personal installation paths or local project identifiers.
+- Publication is manual: no repository creation, remote changes, commit, push or release publication is performed.
 
-#### Dependencies Updated
-- Added Spring AI MCP Server dependencies to main pom.xml
-- Spring AI version: 1.1.0-M1
-- Spring Boot version: 3.4.1
-- Added JUnit 5 for better testing support
-- All MCP dependencies marked as `provided` scope
+### Publication validation
 
-#### Configuration
-- **application-mcp.properties** - MCP server configuration
-- Server runs on port 8080
-- SSE endpoint: `/mcp/messages`
-- Only tool capabilities enabled
-- Debug logging for MCP components
+- Rebuilt the installable ZIP successfully; all 21 automated tests passed.
+- Checked PowerShell syntax and local documentation links.
+- Exercised the installer in isolated workspace folders: custom paths/port,
+  preservation of existing configuration, plugin/configuration backups and ZIP auto-detection.
+- Ran the public MCP connection check against the running server without changing its project.
+- Pre-commit checks passed on all changed/new public files.
+- Verified the source export: 42 files, matching SHA-256 hashes, included dotfiles,
+  valid public TOML and no personal paths, private keys, binaries or caches.
+- Verified the installable ZIP contains its installer, configuration example,
+  documentation and license notices, with no proprietary OpenAPI classes.
 
-### MCP Tools Available
-The plugin now exposes these MCP tools for external interaction:
+### Integrity audit
 
-1. **createUseCaseDiagram(diagramName)** - Creates new use case diagrams
-2. **addActor(actorName, diagramName)** - Adds actors to specific diagrams
-3. **addUseCase(useCaseName, diagramName)** - Adds use cases to diagrams
-4. **addRelationship(actorName, useCaseName, relationshipType)** - Creates relationships
-5. **generateReport(diagramName)** - Generates reports for diagrams
+- All 42 public source files matched the prepared fork export byte for byte.
+- All 17 production classes in the build matched the installed plugin; the distribution JAR matched the build.
+- The obsolete Spring configuration had reappeared unchanged from upstream; its intended removal was restored.
+- No implementation, test, installation, configuration-example or documentation changes were lost.
 
-### Build Status
-- ✅ **Build**: Successful compilation
-- ✅ **Formatting**: Google Java Format applied
-- ✅ **Integration**: MCP server properly integrated into plugin lifecycle
-- ✅ **Dependencies**: All Spring AI MCP dependencies resolved
-- ✅ **Testing**: Test structure in place with proper Spring context
+## English translation
 
-### Next Steps
-The MCP server is now integrated into the plugin. Future work includes:
-1. Implementing actual Visual Paradigm API calls in the tool methods (currently placeholder implementations)
-2. Testing MCP server functionality with external MCP clients
-3. Adding more sophisticated use case operations
-4. Error handling and validation improvements
+- Translated the installation guide, its example prompt and the remaining Spanish README link labels into English.
+- Translated the HTTP test's diagram name while retaining non-ASCII characters to verify UTF-8 handling.
+- Reviewed project source, documentation and configuration files for remaining Spanish text; none found.
+- All 21 automated tests passed using JDK 21 with the Java 11 release target.
 
-The plugin now provides MCP server capabilities that can be consumed by Claude and other MCP-compatible tools for automated Visual Paradigm use case diagram creation and management.
+## Documentation for other harnesses
+
+- Added README and installation guidance inviting users of Claude Code or other harnesses to freely adapt configuration, examples, helper scripts and plugin code to their environment.
+- Clarified that other harnesses use their own configuration format and should be configured separately from the optional Codex installer setup.

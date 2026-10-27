@@ -5,6 +5,7 @@
         class="com.brunnen.vp.usecase.VPUseCasePlugin">
 
     <runtime>
+        <library path="lib/visual-paradigm-mcp-plugin.jar" relativePath="true"/>
     </runtime>
 
     <actionSets>

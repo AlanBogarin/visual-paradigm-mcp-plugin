@@ -26,12 +26,17 @@
         <vp.plugins.dir>UNKNOWN</vp.plugins.dir>
         <vp.plugin.id>visual-paradigm-mcp-plugin-${project.version}</vp.plugin.id>
 
-        <!-- Spring AI MCP Dependencies -->
-        <spring-ai.version>1.1.0-M1</spring-ai.version>
-        <spring-boot.version>3.4.1</spring-boot.version>
     </properties>
 
     <profiles>
+        <profile>
+            <id>windows</id>
+            <activation><os><family>Windows</family></os></activation>
+            <properties>
+                <vp.lib.dir>C:/Program Files/Visual Paradigm CE 18.1/lib</vp.lib.dir>
+                <vp.plugins.dir>${env.APPDATA}/VisualParadigm/plugins</vp.plugins.dir>
+            </properties>
+        </profile>
         <profile>
             <id>linux</id>
             <activation>
@@ -84,29 +89,12 @@
         </profile>
     </profiles>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-bom</artifactId>
-                <version>${spring-ai.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <dependencies>
+        <dependency>
+            <groupId>org.nanohttpd</groupId>
+            <artifactId>nanohttpd</artifactId>
+            <version>2.3.1</version>
+        </dependency>
         <dependency>
             <groupId>com.vp</groupId>
             <artifactId>openapi</artifactId>
@@ -122,25 +110,10 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Spring AI MCP Dependencies -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
-            <scope>provided</scope>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.11.0</version>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -153,7 +126,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.19.0</version>
+            <version>4.11.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -163,27 +136,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring-boot.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- Spring Boot Standalone Test -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.10.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -191,6 +146,24 @@
     <build>
         <finalName>visual-paradigm-mcp-plugin</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions><execution>
+                    <phase>package</phase><goals><goal>shade</goal></goals>
+                    <configuration>
+                        <createDependencyReducedPom>false</createDependencyReducedPom>
+                        <relocations><relocation>
+                            <pattern>com.google.gson</pattern>
+                            <shadedPattern>com.brunnen.vp.internal.gson</shadedPattern>
+                        </relocation><relocation>
+                            <pattern>fi.iki.elonen</pattern>
+                            <shadedPattern>com.brunnen.vp.internal.http</shadedPattern>
+                        </relocation></relocations>
+                    </configuration>
+                </execution></executions>
+            </plugin>
             <plugin>
                 <groupId>com.coveo</groupId>
                 <artifactId>fmt-maven-plugin</artifactId>
@@ -272,6 +245,7 @@
                 <configuration>
                     <source>11</source>
                     <target>11</target>
+                    <release>11</release>
                     <compilerArgs>
                         <arg>-proc:none</arg>
                         <arg>-Xlint:-options</arg>
@@ -310,7 +284,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <skipTests>true</skipTests>
+                    <skipTests>false</skipTests>
                 </configuration>
             </plugin>
             <plugin>
